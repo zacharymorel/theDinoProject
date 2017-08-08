@@ -40,7 +40,7 @@ app.post('/api/dinosaurs', (request, response) => {
 
 app.put('/api/dinosaurs/:id', (request, response) => {
   const dinoId = parseInt(request.params.id)
-  database.one(`UPDATE "dinotable" SET "weight"=4000 WHERE "id"=1`, dinoId)
+  database.result(`UPDATE "dinotable" SET "weight"=4000 WHERE "id"=1`, dinoId)
     .then(dinoId => {
       response.json(dinoId)
     })
