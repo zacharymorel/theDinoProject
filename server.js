@@ -1,8 +1,18 @@
 const app = require('express')()
 const pgPromise = require('pg-promise')()
+const mustacheExpress = require('mustache-express')
+const bodyParser = require('body-parser')
 
 const database = pgPromise({ database: 'thedinos' })
 // console.log(database);
+
+app.use(express.static('public'))
+
+app.engine('mustache', mustacheExpress())
+app.set('views', './templates')
+app.set('view engine', 'mustache')
+
+app.use(bodyParser.urlencoded({extended: false}))
 
 // database.any(`SELECT * FROM "dinotable"`).then(rows => {
 //   rows.forEach(row => {
