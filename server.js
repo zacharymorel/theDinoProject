@@ -1,18 +1,23 @@
-const app = require('express')()
+const express = require('express')
 const pgPromise = require('pg-promise')()
-const mustacheExpress = require('mustache-express')
 const bodyParser = require('body-parser')
 
-const database = pgPromise({ database: 'thedinos' })
-// console.log(database);
+const mustacheExpress = require('mustache-express')
 
-app.use(express.static('public'))
+
+const app = express()
+
+const database = pgPromise({ database: 'thedinos' })
+
+// console.log(database);
 
 app.engine('mustache', mustacheExpress())
 app.set('views', './templates')
 app.set('view engine', 'mustache')
 
+app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 
 // database.any(`SELECT * FROM "dinotable"`).then(rows => {
 //   rows.forEach(row => {
@@ -20,16 +25,26 @@ app.use(bodyParser.urlencoded({extended: false}))
 //   })
 // })
 
+app.get('/', (request, response) => {
+  response.render('dino')
+})
+
+
 app.get('/api/dinosaurs', (request, response) => {
   database.any('SELECT * FROM "dinotable"').then(rows => {
     response.json(rows)
   })
 })
 
+app.get('/dinosaur/:id', (request, response) => {
+  response.render('profileDino')
+})
+
 app.get('/api/dinosaurs/:id', (request, response) => {
   const dinoId = parseInt(request.params.id)
   database.one(`SELECT * FROM "dinotable" WHERE id = $1`, [dinoId])
     .then(dino => {
+      console.log(dino);
       response.json(dino)
     })
 })
