@@ -6,7 +6,7 @@ fetch('/api/dinosaurs')
     json.forEach(dino => {
       let a = document.createElement('a')
       a.href = `/dinosaur/${dino.id}`
-      a.textContent = `dino.name`
+      a.textContent = dino.name
 
       let li = document.createElement('li')
       let img = document.createElement('img')

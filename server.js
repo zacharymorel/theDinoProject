@@ -49,11 +49,36 @@ app.get('/api/dinosaurs/:id', (request, response) => {
     })
 })
 
+app.get('/dinosaurs/edit/:id', (request, response) => {
+  response.render('editDino')
+})
+
 app.get('/api/dinosaurs/:id/Habitats', (request, response) => {
   const dinoId = parseInt(request.params.id)
   database.one(`SELECT "Habitats" FROM "dinotable" WHERE id = $1`, [dinoId])
     .then(dino => {
       response.json(dino)
+    })
+})
+
+app.get('/addDinosaur', (request, response) => {
+  // get to send main page to create dino form
+  response.render('createDino')
+})
+
+app.post('/addingDinosaur', (request, response) => {
+  // DB data here
+  const addDino = {
+    name: request.body.name,
+    color: request.body.color,
+    Habitats: request.body.Habitats,
+    weight: request.body.weight
+  }
+
+  database.none(`INSERT INTO "dinotable" ("name", "color", "Habitats", "weight")
+    VALUES ($(name), $(color), $(Habitats), $(weight))`, addDino)
+    .then(addDino => {
+      response.render('dino', addDino)
     })
 })
 

@@ -13,13 +13,17 @@ fetch(`/api/dinosaurs/${id}`)
     const color = document.createElement('p')
     const weight = document.createElement('p')
     const habitats = document.createElement('p')
+    const editAnchor = document.createElement('a')
 
     img.src = json.ImageUrl
     name.textContent = `Name: ${json.name}`
     color.textContent = `Color(s): ${json.color}`
     weight.textContent = `Relative Weight: ${json.weight}`
     habitats.textContent = `Habitats: ${json.Habitats}`
+    editAnchor.textContent = `Edit`
+    editAnchor.href = `/dinosaurs/edit/${json.id}`
 
+    personalList.appendChild(editAnchor)
     personalList.appendChild(img)
     personalList.appendChild(name)
     personalList.appendChild(color)
