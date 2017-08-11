@@ -33,13 +33,13 @@ function fetchinstein() {
 }
 
 fetch(`/api/dinosaurs/${id}`).then(response => response.json()).then(data => {
-  console.log(data);
+  // console.log(data);
     markup = `
     <form class="editform">
-      <input type="text" name="name" value="${data.name}">
-      <input type="text" name="color" value="${data.color}">
-      <input type="text" name="Habitats" value="${data.Habitats}">
-      <input type="text" name="weight" value="${data.weight}">
+      <p>Name: </p><input type="text" name="name" value="${data.name}">
+      <p>Color: </p><input type="text" name="color" value="${data.color}">
+      <p>Habitats: </p><input type="text" name="Habitats" value="${data.Habitats}">
+      <p>Weight:</p><input type="text" name="weight" value="${data.weight}">
       <button type="button" name="button" onclick="fetchinstein()">Save</button>
     </form>
     `

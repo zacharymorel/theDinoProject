@@ -14,6 +14,7 @@ fetch(`/api/dinosaurs/${id}`)
     const weight = document.createElement('p')
     const Habitats = document.createElement('p')
     const editAnchor = document.createElement('a')
+    const deleteAnchor = document.createElement('a')
 
     img.src = json.ImageUrl
     name.textContent = `Name: ${json.name}`
@@ -22,8 +23,17 @@ fetch(`/api/dinosaurs/${id}`)
     Habitats.textContent = `Habitats: ${json.Habitats}`
     editAnchor.textContent = `Edit`
     editAnchor.href = `/dinosaurs/edit/${json.id}`
+    deleteAnchor.textContent = `Delete`
+    deleteAnchor.href = `/api/dinosaurs/${json.id}/delete`
+    deleteAnchor.addEventListener('click',(event) => {
+      event.preventDefault()
+      fetch(event.target.href, {method: 'delete'})
+        .then(() => window.location = '/')
+    })
+
 
     personalList.appendChild(editAnchor)
+    personalList.appendChild(deleteAnchor)
     personalList.appendChild(img)
     personalList.appendChild(name)
     personalList.appendChild(color)

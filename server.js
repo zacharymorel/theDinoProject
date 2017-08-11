@@ -31,7 +31,8 @@ app.get('/', (request, response) => {
 
 
 app.get('/api/dinosaurs', (request, response) => {
-  database.any('SELECT * FROM "dinotable"').then(rows => {
+  database.any('SELECT * FROM "dinotable"')
+    .then(rows => {
     response.json(rows)
   })
 })
@@ -48,7 +49,7 @@ app.get('/api/dinosaurs/:id', (request, response) => {
       response.json(dino)
     })
 })
-
+// render edit page
 app.get('/dinosaurs/edit/:id', (request, response) => {
   response.render('editDino')
 })
@@ -107,7 +108,8 @@ app.put("/api/dinosaurs/:id", (request,response) => {
     })
 })
 
-app.delete('/api/dinosaurs/', (request, response) => {
+
+app.delete('/api/dinosaurs/:id/delete', (request, response) => {
   const dinoId = parseInt(request.params.id)
   database.result(`DELETE FROM "dinotable" WHERE "id"=$1`, [dinoId])
     .then(() => {
