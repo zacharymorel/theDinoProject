@@ -44,7 +44,7 @@ app.get('/api/dinosaurs/:id', (request, response) => {
   const dinoId = parseInt(request.params.id)
   database.one(`SELECT * FROM "dinotable" WHERE id = $1`, [dinoId])
     .then(dino => {
-      console.log(dino);
+      // console.log(dino);
       response.json(dino)
     })
 })
@@ -88,15 +88,26 @@ app.post('/api/dinosaurs', (request, response) => {
     response.json()
 })
 
-app.put('/api/dinosaurs/:id', (request, response) => {
-  const dinoId = parseInt(request.params.id)
-  database.result(`UPDATE "dinotable" SET "weight"=4000 WHERE "id"=1`, dinoId)
-    .then(dinoId => {
-      response.json(dinoId)
+app.put("/api/dinosaurs/:id", (request,response) => {
+  const dinoid = parseInt(request.params.id)
+  const updatedino = {
+    id: dinoid,
+    name: request.body.name,
+    color: request.body.color,
+    Habitats: request.body.Habitats,
+    weight: parseInt(request.body.weight)
+  }
+
+  database.result(`UPDATE "dinotable" SET ("name", "color", "Habitats", "weight") = ($(name), $(color), $(Habitats), $(weight)) WHERE id = $(id)`, updatedino)
+    .then(data => {
+      response.json({status: "ok"})
+    })
+    .catch(error => {
+      response.json({status: "error", error: error})
     })
 })
 
-app.delete('/api/dinosaurs/:id', (request, response) => {
+app.delete('/api/dinosaurs/', (request, response) => {
   const dinoId = parseInt(request.params.id)
   database.result(`DELETE FROM "dinotable" WHERE "id"=$1`, [dinoId])
     .then(() => {
